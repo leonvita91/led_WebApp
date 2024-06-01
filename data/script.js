@@ -19,24 +19,6 @@ setInterval(updateClock, 1000);
 // Initial call to display the clock immediately
 updateClock();
 
-function updateBrightness(value) {
-    // Update the slider value display
-    document.getElementById("myBright").textContent = value;
-    // Send an HTTP GET request to the server to update the brightness
-    fetch(`/brightness?value=${value}`);
-    // Update the brightness value display
-    const output = document.querySelector(".bright-value");
-    output.textContent = value;
-}
-function updateFrams(value) {
-    // Update the slider value dispaly
-    document.getElementById("myFrame").textContent = value;
-
-    fetch(`/set-frames?value=${value}`);
-    const output = document.querySelector(".frame-value");
-    output.textContent = value;
-}
-
 // ESP temperature
 setInterval(() => {
         fetch('/esp_temp')
@@ -55,30 +37,27 @@ setInterval(() => {
     }, 2000); // Update every 1 second
 
 // LEDs Section
+function updateBrightness(value) {
+    // Update the slider value display
+    document.getElementById("myBright").textContent = value;
+    // Send an HTTP GET request to the server to update the brightness
+    fetch(`/brightness?value=${value}`);
+    // Update the brightness value display
+    const output = document.querySelector(".bright-value");
+    output.textContent = value;
+}
+function updateFrams(value) {
+    // Update the slider value dispaly
+    document.getElementById("myFrame").textContent = value;
 
-// Target Blue button
+    fetch(`/set-frames?value=${value}`);
+    const output = document.querySelector(".frame-value");
+    output.textContent = value;
+}
+
+// Target Stop button
 document.getElementById("stop-light").onclick = function() {
     fetch('/stop-light', {
-        method: 'POST'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
-    })
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('There was an error!', error);
-    });
-};
-
-
-// Target Rainbow button
-document.getElementById("rainbow-light").onclick = function() {
-    fetch('/rainbow-light', {
         method: 'POST'
     })
     .then(response => {
@@ -136,6 +115,46 @@ document.getElementById("red-light").onclick = function() {
 // Target Green button
 document.getElementById("green-light").onclick = function() {
     fetch('/green-light', {
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('There was an error!', error);
+    });
+};
+
+// Animations LED Section
+
+// Target Rainbow button
+document.getElementById("rainbow-light").onclick = function() {
+    fetch('/rainbow-light', {
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('There was an error!', error);
+    });
+};
+
+// Target Race button
+document.getElementById("race-light").onclick = function() {
+    fetch('/race-light', {
         method: 'POST'
     })
     .then(response => {

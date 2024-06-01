@@ -10,7 +10,7 @@ int BRIGHTNESS = 10;
 
 CRGB leds[NUM_LEDS];
 uint8_t gHue = 0;
-bool Stop{false}, Rainbow{false}, Blue{false}, Red{false}, Green{false};
+bool Stop{false}, Rainbow{false}, Race{false}, Blue{false}, Red{false}, Green{false};
 
 // LED Setup
 void setup_LED()
@@ -34,6 +34,7 @@ void request_Stop()
     server.on("/stop-light", HTTP_POST, []()
             { server.send(200, "text/plain");
     Rainbow = false;
+    Race = false;
     Blue = false;
     Green = false;
     Red = false;
@@ -61,39 +62,6 @@ if (server.hasArg("value")) {
 }
 server.send(200, "text/plain", "OK"); });
 
-}
-
-// Rainbow
-void rainbow() {
-    // FastLED's built-in rainbow generator
-    // fill_rainbow(leds, NUM_LEDS, gHue, 7); // Run Rainbow
-    // colored stripes pulsing at a defined Beats-Per-Minute (BPM)
-
-    // Run dancing
-    // uint8_t BeatsPerMinute = 62;
-    // CRGBPalette16 palette = PartyColors_p;
-    // uint8_t beat = beatsin8(BeatsPerMinute, 64, 255);
-    // for (int i = 0; i < NUM_LEDS; i++)
-    // { // 9948
-    //     leds[i] = ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
-    // }
-    // a colored dot sweeping back and forth, with fading trails
-    fadeToBlackBy(leds, NUM_LEDS, 20);
-    int pos = beatsin16(FRAMES_PER_SECOND, 0, NUM_LEDS - 1);
-    leds[pos] += CHSV(gHue, 255, 192);
-}
-// LED HTTP Requests
-void request_Rainbow()
-{
-    // Request LED Functionallty
-    server.on("/rainbow-light", HTTP_POST, []()
-            { server.send(200, "text/plain");
-    Stop = false;
-    Rainbow = true;
-    Blue = false;
-    Green = false;
-    Red = false;
-    rainbow(); });
 }
 
 // Blue Light
@@ -136,6 +104,7 @@ void request_Red() {
 void Green_light() {
     // Set all LEDs to Green
     fill_solid(leds, NUM_LEDS, CRGB::Green);
+    FastLED.show();
 }
 // LED HTTP Requests
 void request_Green() {
@@ -150,17 +119,53 @@ void request_Green() {
     Green_light(); });
 }
 
-// // Slider Frames
+// Animations Section
 
-// void Frames_Control(){
-//     // Slider function
-//     server.on("/set-frames", HTTP_GET, []() {
-//     if (server.hasArg("value")) {
-//         FRAMES_PER_SECOND = server.arg("value").toInt();
-//         Serial.print("Received value: ");
-//         Rainbow = false;
-//         Rainbow = true;
-//         Serial.println(FRAMES_PER_SECOND);
-//     }
-//     server.send(200, "text/plain", "OK"); });
-// }
+// Rainbow
+void rainbow()
+{
+    fill_rainbow(leds, NUM_LEDS, gHue, 7);
+    FastLED.delay(50 / FRAMES_PER_SECOND);
+}
+// LED HTTP Requests
+void request_Rainbow()
+{
+    // Request LED Functionallty
+    server.on("/rainbow-light", HTTP_POST, []()
+            { server.send(200, "text/plain");
+    Stop = false;
+    Rainbow = true;
+    Blue = false;
+    Green = false;
+    Red = false;
+    rainbow(); });
+}
+
+// Race
+
+// Race
+void race()
+{
+    // Start from the first LED
+    for (int i = 0; i < NUM_LEDS; i++)
+    {
+        leds[i] = CRGB::Blue;
+        delay(FRAMES_PER_SECOND);
+        FastLED.show();
+        leds[i] = CRGB::Black;
+    }
+}
+// LED HTTP Requests
+void request_Race()
+{
+    // Request LED Functionallty
+    server.on("/race-light", HTTP_POST, []()
+            { server.send(200, "text/plain");
+    Stop = false;
+    Rainbow = false;
+    Race = true;
+    Blue = false;
+    Green = false;
+    Red = false;
+    rainbow(); });
+}

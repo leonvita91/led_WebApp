@@ -76,12 +76,13 @@ void setup()
     // Call LED Request
     request_Stop();
     Bright_light();
-    request_Rainbow();
+    Frames_Control();
     request_Blue();
     request_Red();
     request_Green();
-    Frames_Control();
-    
+    // Request Ainmations
+    request_Rainbow();
+    request_Race();
 
     // Start Web-server
     server.begin();
@@ -107,7 +108,6 @@ void loop() {
     if (Rainbow) {
       rainbow();
       FastLED.show();
-      FastLED.delay(50 / FRAMES_PER_SECOND);
       EVERY_N_MILLISECONDS(20) { gHue++; }
     }
     
@@ -123,6 +123,9 @@ void loop() {
     
     if (Green) {
       Green_light();
-      FastLED.show();
+    }
+    
+    if (Race) {
+      race();
     }
   }
