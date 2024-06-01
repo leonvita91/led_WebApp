@@ -5,17 +5,12 @@
 #include <FastLED.h>
 #include <Time.h>
 
-// Define LEDs
-#define DATA_PIN 5
-#define COLOR_ORDER GRB
-#define NUM_LEDS 15
-#define LED_TYPE WS2812B
-#define BRIGHTNESS 96
-#define FRAMES_PER_SECOND 120
+int FRAMES_PER_SECOND = 50;
+int BRIGHTNESS = 10;
 
 CRGB leds[NUM_LEDS];
 uint8_t gHue = 0;
-bool Rainbow{false}, Blue{false}, Red{false}, Green{false}, Stop{false};
+bool Stop{false}, Frames{false}, Rainbow{false}, Blue{false}, Red{false}, Green{false};
 
 // LED Setup
 void setup_LED()
@@ -46,10 +41,38 @@ void request_Stop()
     Stop_light(); });
 }
 
+// Control Brightness
+
+void Bright_light(){
+    server.on("/brightness", HTTP_GET, []() {
+        if (server.hasArg("value")) {
+            int newBrightness = server.arg("value").toInt();
+            FastLED.setBrightness(newBrightness);
+            FastLED.show(); // Apply the new brightness immediately
+            Serial.print("Brightness updated: ");
+            Serial.println(newBrightness);
+        }
+        server.send(200, "text/plain", "OK"); });
+}
+
 // Rainbow
 void rainbow() {
     // FastLED's built-in rainbow generator
-    fill_rainbow(leds, NUM_LEDS, gHue, 7);
+    // fill_rainbow(leds, NUM_LEDS, gHue, 7); // Run Rainbow
+    // colored stripes pulsing at a defined Beats-Per-Minute (BPM)
+
+    // Run dancing
+    // uint8_t BeatsPerMinute = 62;
+    // CRGBPalette16 palette = PartyColors_p;
+    // uint8_t beat = beatsin8(BeatsPerMinute, 64, 255);
+    // for (int i = 0; i < NUM_LEDS; i++)
+    // { // 9948
+    //     leds[i] = ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
+    // }
+    // a colored dot sweeping back and forth, with fading trails
+    fadeToBlackBy(leds, NUM_LEDS, 20);
+    int pos = beatsin16(FRAMES_PER_SECOND, 0, NUM_LEDS - 1);
+    leds[pos] += CHSV(gHue, 255, 192);
 }
 // LED HTTP Requests
 void request_Rainbow()
@@ -118,3 +141,18 @@ void request_Green() {
     Red = false;
     Green_light(); });
 }
+
+// // Slider Frames
+
+// void Frames_Control(){
+//     // Slider function
+//     server.on("/set-frames", HTTP_GET, []() {
+//     if (server.hasArg("value")) {
+//         FRAMES_PER_SECOND = server.arg("value").toInt();
+//         Serial.print("Received value: ");
+//         Rainbow = false;
+//         Rainbow = true;
+//         Serial.println(FRAMES_PER_SECOND);
+//     }
+//     server.send(200, "text/plain", "OK"); });
+// }

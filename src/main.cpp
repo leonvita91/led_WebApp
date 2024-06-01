@@ -12,8 +12,6 @@
 #include <FastLED.h>
 
 
-
-
 void setup()
   {
     Serial.begin(115200);
@@ -77,10 +75,13 @@ void setup()
     FastLED.show();
     // Call LED Request
     request_Stop();
+    Bright_light();
     request_Rainbow();
     request_Blue();
     request_Red();
     request_Green();
+    // Frames_Control();
+    
 
     // Start Web-server
     server.begin();
@@ -100,6 +101,8 @@ void loop() {
       FastLED.show();
       FastLED.delay(50);
     }
+
+    // Brightness
     
     if (Rainbow) {
       rainbow();
@@ -122,5 +125,4 @@ void loop() {
       Green_light();
       FastLED.show();
     }
-    
   }

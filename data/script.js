@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Clock 
-
 function updateClock() {
   const now = new Date();
   const hours = now.getHours().toString().padStart(2, '0');
@@ -20,15 +19,15 @@ setInterval(updateClock, 1000);
 // Initial call to display the clock immediately
 updateClock();
 
-// slider brightness
-const slider = document.getElementById("myBright");
-const output = document.querySelector(".bright-value");
-output.textContent = slider.value;
-
-slider.addEventListener("input", function() {
-  output.textContent = this.value;
-});
-
+function updateBrightness(value) {
+    // Update the slider value display
+    document.getElementById("myBright").textContent = value;
+    // Send an HTTP GET request to the server to update the brightness
+    fetch(`/brightness?value=${value}`);
+    // Update the brightness value display
+    const output = document.querySelector(".bright-value");
+    output.textContent = value;
+}
 // slider fps
 const fps = document.getElementById("myFrame");
 const out = document.querySelector(".frame-value");
@@ -38,17 +37,23 @@ fps.addEventListener("input", function() {
   out.textContent = this.value;
 });
 
+// JavaScript function to update FRAMES_PER_SECOND
+// function updateFrams(value) {
+//     fetch(`/set-frames?value=${value}`);
+// }
+
 // ESP temperature
 setInterval(() => {
-      fetch('/esp_temp')
+        fetch('/esp_temp')
         .then(response => response.text())
         .then(data => document.getElementById('esp_temp').innerText = data + " °C")
         .catch(error => console.error('Error:', error));
     }, 2000);
+    
 
 // ESP CPU Reading
 setInterval(() => {
-      fetch('/esp_cpu')
+    fetch('/esp_cpu')
         .then(response => response.text())
         .then(data => document.getElementById('cpu_usage').innerText = data + '%')
         .catch(error => console.error('Error:', error));

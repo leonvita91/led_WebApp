@@ -10,13 +10,14 @@
 #define COLOR_ORDER GRB
 #define NUM_LEDS 15
 #define LED_TYPE WS2812B
-#define BRIGHTNESS 96
-#define FRAMES_PER_SECOND 120
+
+extern int FRAMES_PER_SECOND;
+extern int BRIGHTNESS;
 
 // Declare variables as extern
 extern CRGB leds[NUM_LEDS];
 extern uint8_t gHue;
-extern bool Rainbow,Blue,Red,Green,Stop;
+extern bool Stop, Frames, Rainbow, Blue, Red, Green;
 
 // Declare LEDs Functions
 void setup_LED();
@@ -25,4 +26,5 @@ void request_Blue();    void Blue_light();
 void request_Red();     void Red_light();
 void request_Green();   void Green_light();
 void request_Stop();    void Stop_light();
+void Frames_Control();  void Bright_light();
 #endif
