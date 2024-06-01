@@ -5,12 +5,12 @@
 #include <FastLED.h>
 #include <Time.h>
 
-int FRAMES_PER_SECOND = 50;
+int FRAMES_PER_SECOND = 20;
 int BRIGHTNESS = 10;
 
 CRGB leds[NUM_LEDS];
 uint8_t gHue = 0;
-bool Stop{false}, Frames{false}, Rainbow{false}, Blue{false}, Red{false}, Green{false};
+bool Stop{false}, Rainbow{false}, Blue{false}, Red{false}, Green{false};
 
 // LED Setup
 void setup_LED()
@@ -42,17 +42,25 @@ void request_Stop()
 }
 
 // Control Brightness
-
 void Bright_light(){
     server.on("/brightness", HTTP_GET, []() {
         if (server.hasArg("value")) {
             int newBrightness = server.arg("value").toInt();
             FastLED.setBrightness(newBrightness);
-            FastLED.show(); // Apply the new brightness immediately
-            Serial.print("Brightness updated: ");
-            Serial.println(newBrightness);
         }
         server.send(200, "text/plain", "OK"); });
+}
+
+// Frames Control
+void Frames_Control(){
+server.on("/set-frames", HTTP_GET, []() {
+if (server.hasArg("value")) {
+    FRAMES_PER_SECOND = server.arg("value").toInt();
+    Serial.print("Received value: ");
+    Serial.println(FRAMES_PER_SECOND);
+}
+server.send(200, "text/plain", "OK"); });
+
 }
 
 // Rainbow

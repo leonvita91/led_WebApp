@@ -80,7 +80,7 @@ void setup()
     request_Blue();
     request_Red();
     request_Green();
-    // Frames_Control();
+    Frames_Control();
     
 
     // Start Web-server

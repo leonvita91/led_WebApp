@@ -28,19 +28,14 @@ function updateBrightness(value) {
     const output = document.querySelector(".bright-value");
     output.textContent = value;
 }
-// slider fps
-const fps = document.getElementById("myFrame");
-const out = document.querySelector(".frame-value");
-out.textContent = fps.value;
+function updateFrams(value) {
+    // Update the slider value dispaly
+    document.getElementById("myFrame").textContent = value;
 
-fps.addEventListener("input", function() {
-  out.textContent = this.value;
-});
-
-// JavaScript function to update FRAMES_PER_SECOND
-// function updateFrams(value) {
-//     fetch(`/set-frames?value=${value}`);
-// }
+    fetch(`/set-frames?value=${value}`);
+    const output = document.querySelector(".frame-value");
+    output.textContent = value;
+}
 
 // ESP temperature
 setInterval(() => {
