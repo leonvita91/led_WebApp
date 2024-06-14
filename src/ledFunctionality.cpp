@@ -5,12 +5,12 @@
 #include <FastLED.h>
 #include <Time.h>
 
-int FRAMES_PER_SECOND = 20;
+int FRAMES_PER_SECOND = 1;
 int BRIGHTNESS = 10;
 
 CRGB leds[NUM_LEDS];
 uint8_t gHue = 0;
-bool Stop{false}, Rainbow{false}, Race{false}, Blue{false}, Red{false}, Green{false};
+bool Stop{false}, Rainbow{false}, Race{false}, Crisscross{false}, Blue{false}, Red{false}, Green{false};
 
 // LED Setup
 void setup_LED()
@@ -122,9 +122,9 @@ void request_Green() {
 // Animations Section
 
 // Rainbow
-void rainbow()
-{
+void rainbow() {
     fill_rainbow(leds, NUM_LEDS, gHue, 7);
+    EVERY_N_MILLISECONDS(FRAMES_PER_SECOND) { gHue++; }
     FastLED.delay(50 / FRAMES_PER_SECOND);
 }
 // LED HTTP Requests
@@ -142,17 +142,18 @@ void request_Rainbow()
 }
 
 // Race
-
-// Race
 void race()
 {
-    // Start from the first LED
-    for (int i = 0; i < NUM_LEDS; i++)
+    static int ledIndex = 0;
+    static unsigned long previousMillis = 0;
+
+    if (millis() - previousMillis >= FRAMES_PER_SECOND)
     {
-        leds[i] = CRGB::Blue;
-        delay(FRAMES_PER_SECOND);
+        previousMillis = millis();
+        leds[ledIndex] = CRGB::Black;
+        ledIndex = (ledIndex + 1) % NUM_LEDS;
+        leds[ledIndex] = CRGB::BlueViolet;
         FastLED.show();
-        leds[i] = CRGB::Black;
     }
 }
 // LED HTTP Requests
@@ -167,5 +168,39 @@ void request_Race()
     Blue = false;
     Green = false;
     Red = false;
-    rainbow(); });
+    race(); });
+}
+
+// Race
+void crisscross()
+{
+    static int ledIndex_First = 0;
+    static int ledIndex_Sec = 0;
+    static unsigned long previousMillis_First = 0;
+    static unsigned long previousMillis_Sec = 0;
+    long timeStamp = millis();
+
+    if (timeStamp - previousMillis_First >= FRAMES_PER_SECOND)
+    {
+        previousMillis_First = timeStamp;
+        ledIndex_First = (ledIndex_First - 1 + 32) % 32;
+        leds[ledIndex_First] = CRGB::BlueViolet;
+        ledIndex_Sec = (ledIndex_Sec + 1) % 32;
+        leds[ledIndex_Sec] = CRGB::Blue;
+        FastLED.show();
+    }
+}
+// LED HTTP Requests
+void request_crisscross()
+{
+    // Request LED Functionallty
+    server.on("/race-light", HTTP_POST, []()
+            { server.send(200, "text/plain");
+    Stop = false;
+    Rainbow = false;
+    Race = true;
+    Blue = false;
+    Green = false;
+    Red = false;
+    crisscross; });
 }

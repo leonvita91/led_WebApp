@@ -1,6 +1,8 @@
 #include "LedRequest.h"
 #include "credentials.h"
 #include "esp_sys.h"
+#include <Arduino.h>
+#include <ArduinoOTA.h>
 #include <WiFi.h>
 #include <WebServer.h>
 #include <SPIFFS.h>
@@ -11,17 +13,19 @@
 #include <WireGuard-ESP32.h>
 #include <FastLED.h>
 
-
 void setup()
   {
     Serial.begin(115200);
     // Connect to Wi-Fi
     Serial.println("Connecting to WiFi...");
     WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED)
+    // Wait for the Connection to Establish
+    while (WiFi.waitForConnectResult() != WL_CONNECTED)
     {
-      delay(1000);
-      Serial.print(".");
+      // IF the Connection not Established it will reboot the ESP32
+      Serial.println("Connection Failed! Rebooting...");
+      delay(5000);
+      ESP.restart();
     }
     Serial.println("\nWiFi connected");
     Serial.println("IP address: ");
@@ -39,6 +43,9 @@ void setup()
     Serial.print("Current time: ");
     Serial.println(ctime(&now));
 
+    // OTA Fire Connection
+    ArduinoOTA.begin();
+    
     // VPN Fire Connection
     wg.begin(local_ip, private_key, endpoint_address, public_key, endpoint_port);
     Serial.println("VPN Connected");
@@ -90,10 +97,13 @@ void setup()
 
     // Call Configure the Temp sensor
     configureTemperatureSensor();
+
   }
 
 void loop() {
-
+    // Handel OTA Connection
+    ArduinoOTA.handle();
+    // Handel WebServer Clients
     server.handleClient();
     // Looping the LEDs
     if (Stop) {
@@ -108,7 +118,6 @@ void loop() {
     if (Rainbow) {
       rainbow();
       FastLED.show();
-      EVERY_N_MILLISECONDS(20) { gHue++; }
     }
     
     if (Blue) {
@@ -124,7 +133,7 @@ void loop() {
     if (Green) {
       Green_light();
     }
-    
+
     if (Race) {
       race();
     }
