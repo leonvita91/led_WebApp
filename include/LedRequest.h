@@ -13,11 +13,11 @@
 
 extern int FRAMES_PER_SECOND;
 extern int BRIGHTNESS;
+extern bool Stop, Frames, Rainbow, Race, Crisscross, Water, Dancing, Blue, Red, Green;
 
 // Declare variables as extern
 extern CRGB leds[NUM_LEDS];
 extern uint8_t gHue;
-extern bool Stop, Frames, Rainbow, Race, Crisscross, Blue, Red, Green;
 
 // Declare LEDs Functions
 void setup_LED();
@@ -30,5 +30,10 @@ void Frames_Control();      void Bright_light();
 void request_Rainbow();     void rainbow();
 void request_Race();        void race();
 void request_crisscross();  void crisscross();
+void request_dancing();     void dancing();
 
+// Setup water effect & calling the functions.
+void call_first();
+void request_water();       void water_light();
 #endif
+

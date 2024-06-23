@@ -84,7 +84,7 @@
             </div>
             <div class="slider-container">
                 <input type="range" min="10" max="150" class="slider" id="myBright" value="%BRIGHTNESS%" onchange="updateBrightness(this.value)">
-                <output for="myRange" class="bright-value">10</output>
+                <output for="myRange" class="bright-value">50</output>
             </div>
             
             <div class="frame-name">
@@ -92,7 +92,7 @@
             </div>
             <div class="frame-container">
                 <input type="range" min="1" max="120" value='%FRAMES_PER_SECOND%' onchange='updateFrams(this.value)' class="slider" id="myFrame">
-                <output for="myRange" class="frame-value">1</output>
+                <output for="myRange" class="frame-value">50</output>
             </div>
         </div>
     </div>
@@ -104,11 +104,15 @@
             Animation
         </div>
         <div class="stack-buttons">
-            <button id="rainbow-light" class="button-rainbow" role="button">Rainbow</button>
-            <button id="race-light" class="button-race" role="button">Race</button>
-            <button id="stop-light" class="stop-led" role="button"><span class="text">Stop</span></button>
-        
-    </div>
+            <button id="rainbow-light" style="--clr:#39FF14"><span>Rainbow</span><i></i></button>
+            <button id="cross-light" style="--clr:#8A2BE2"><span>Criscross</span><i></i></button>
+            <button id="race-light" style="--clr:#0FF0FC"><span>Raceing</span><i></i></button>
+            <button id="water-light" style="--clr:#99ffcc
+            "><span>Water</span><i></i></button>
+            <button id="dancing-light" style="--clr:#FF44CC"><span>Dancing</span><i></i></button>
+        </div>
+        <button id="stop-light" class="stop-led" ><span class="text">Stop</span></button>
+
     <!-- End Second Container -->
 
 </div>

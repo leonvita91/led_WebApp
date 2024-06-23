@@ -170,3 +170,61 @@ document.getElementById("race-light").onclick = function() {
         console.error('There was an error!', error);
     });
 };
+
+// Target Race button
+document.getElementById("cross-light").onclick = function() {
+    fetch('/cross-light', {
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('There was an error!', error);
+    });
+};
+
+// Target Water button
+document.getElementById("water-light").onclick = function() {
+    fetch('/water-light', {
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('There was an error!', error);
+    });
+};
+
+// Target Dancing button
+document.getElementById("dancing-light").onclick = function() {
+    fetch('/dancing-light', {
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('There was an error!', error);
+    });
+};
+

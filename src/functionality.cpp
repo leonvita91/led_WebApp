@@ -12,7 +12,8 @@
 
 WebServer server(80);
 // Define Functions
-void handleRoot() {
+void handleRoot()
+{
     File file = SPIFFS.open("/index.html", "r");
     if (!file)
     {
@@ -23,7 +24,8 @@ void handleRoot() {
     file.close();
 }
 
-void serveCSS(String path) {
+void serveCSS(String path)
+{
     File file = SPIFFS.open(path, "r");
     if (!file)
     {
@@ -34,7 +36,8 @@ void serveCSS(String path) {
     file.close();
 }
 
-void serveJS(String path) {
+void serveJS(String path)
+{
     File file = SPIFFS.open(path, "r");
     if (!file)
     {
@@ -45,7 +48,8 @@ void serveJS(String path) {
     file.close();
 }
 
-void handleNotFound() {
+void handleNotFound()
+{
     String path = server.uri();
     if (path.endsWith(".css"))
     {
@@ -61,14 +65,16 @@ void handleNotFound() {
 }
 
 // CPU Reading prop
-int getCpuUsage() {
+int getCpuUsage()
+{
     uint8_t cpuUsage = uxTaskGetStackHighWaterMark(NULL);
     cpuUsage = (100 - cpuUsage);
     return cpuUsage;
 }
 
 // Reading Temprture
-void configureTemperatureSensor() {
+void configureTemperatureSensor()
+{
     temp_sensor_config_t temp_sensor = TSENS_CONFIG_DEFAULT();
     temp_sensor.dac_offset = TSENS_DAC_L2; // TSENS_DAC_L2 is default; L4(-40°C ~ 20°C), L2(-10°C ~ 80°C), L1(20°C ~ 100°C), L0(50°C ~ 125°C)
     temp_sensor_set_config(temp_sensor);
@@ -76,7 +82,8 @@ void configureTemperatureSensor() {
 }
 
 // floting the temp function
-float readTemperature() {
+float readTemperature()
+{
     temp_sensor_start();
     float result = 0;
     temp_sensor_read_celsius(&result);

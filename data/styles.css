@@ -333,167 +333,151 @@
 
 .second-container {
     display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: stretch;
-        margin: auto;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        width: 30rem;
-        border-radius: 1rem;
-        /* Updated to 100% for responsiveness */
-        background-color: #1a233e;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 30rem;
+    border-radius: 1rem;
+    /* Updated to 100% for responsiveness */
+    background-color: #1a233e;
 }
 
 .stack-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap:5px;
 }
 
 .aninmations {
     display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: fantasy;
-        color: #65bdb9;
-        font-size: 3rem;
+    justify-content: center;
+    align-items: center;
+    font-family: fantasy;
+    color: #65bdb9;
+    font-size: 3rem;
 }
 
-.button-rainbow {
-    padding: 0.6em;
-    border: none;
-    outline: none;
-    color: rgb(255, 255, 255);
-    background: #111;
-    cursor: pointer;
+
+/* Demo */
+
+button {
+    display: flex;
     position: relative;
-    z-index: 0;
-    border-radius: 10px;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
+    flex-wrap: wrap;
+    background: #444;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: none;
+    letter-spacing: 0.1rem;
+    font-size: 1rem;
+    padding: 1rem 1rem;
+    transition: 0.2s;
 }
 
-.button-rainbow:before {
+button:hover {
+    letter-spacing: 0.2rem;
+    padding: 1.1rem 1.1rem;
+    background: var(--clr);
+    color: var(--clr);
+    /* box-shadow: 0 0 35px var(--clr); */
+    animation: box 3s infinite;
+}
+
+button::before {
     content: "";
-    background: linear-gradient(45deg,
-            #ff0000,
-            #ff7300,
-            #fffb00,
-            #48ff00,
-            #00ffd5,
-            #002bff,
-            #7a00ff,
-            #ff00c8,
-            #ff0000);
     position: absolute;
-    top: -2px;
-    left: -2px;
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(5px);
-    -webkit-filter: blur(5px);
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    animation: glowing-button-rainbow 50s linear infinite;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: 10px;
+    inset: 2px;
+    background: #272822;
 }
 
-@keyframes glowing-button-rainbow {
+button span {
+    position: relative;
+    z-index: 1;
+}
+
+button i {
+    position: absolute;
+    inset: 0;
+    display: block;
+}
+
+button i::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    left: 80%;
+    top: -2px;
+    border: 2px solid var(--clr);
+    background: #272822;
+    transition: 0.2s;
+}
+
+button:hover i::before {
+    width: 15px;
+    left: 20%;
+    animation: move 3s infinite;
+}
+
+button i::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    left: 20%;
+    bottom: -2px;
+    border: 2px solid var(--clr);
+    background: #272822;
+    transition: 0.2s;
+}
+
+button:hover i::after {
+    width: 15px;
+    left: 80%;
+    animation: move 3s infinite;
+}
+
+@keyframes move {
     0% {
-        background-position: 0 0;
+        transform: translateX(0);
     }
 
     50% {
-        background-position: 400% 0;
+        transform: translateX(5px);
     }
 
     100% {
-        background-position: 0 0;
+        transform: translateX(0);
     }
 }
 
-.button-rainbow:after {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #222;
-    left: 0;
-    top: 0;
-    border-radius: 10px;
-}
-
-/* race button */
-.button-race {
-    padding: 0.6em 2em;
-    border: none;
-    outline: none;
-    color: rgb(255, 255, 255);
-    background: #111;
-    cursor: pointer;
-    position: relative;
-    z-index: 0;
-    border-radius: 10px;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
-
-.button-race:before {
-    content: "";
-    background: linear-gradient(70deg,
-            #0095ff,
-            #0dff00,
-            #fffb00,
-            #ff00c8,
-            #ff0000);
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(5px);
-    -webkit-filter: blur(5px);
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    animation: glowing-button-race 10s linear infinite;
-    transition: opacity 0.1s ease-in;
-    border-radius: 10px;
-}
-
-@keyframes glowing-button-race {
+@keyframes box {
     0% {
-        background-position: 0 0;
+        box-shadow: #27272c;
     }
 
     50% {
-        background-position: 800% 0;
+        box-shadow: 0 0 25px var(--clr);
     }
 
     100% {
-        background-position: 0 0;
+        box-shadow: #27272c;
     }
 }
 
-.button-race:after {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #222;
-    left: 0;
-    top: 0;
-    border-radius: 10px;
-}
 
 /* Control LED */
-
 .stop-led {
+    display: flex;
+    margin: 20px 0px 20px 0px;
+    border-radius: 2rem;
     appearance: none;
     background-color: #1a233e;
     border-width: 0;
@@ -506,10 +490,8 @@
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1em;
-    margin: 0;
     opacity: 1;
     outline: 0;
-    padding: 1.5em 2.2em;
     position: relative;
     text-align: center;
     text-decoration: none;
@@ -530,6 +512,7 @@
     clip-path: polygon(-1% 0, 0 0, -25% 100%, -1% 100%);
     content: "";
     height: 100%;
+    border-radius: 2rem;
     left: 0;
     position: absolute;
     top: 0;
@@ -548,6 +531,7 @@
 }
 
 .stop-led span {
+    color: white;
     z-index: 1;
     position: relative;
 }
